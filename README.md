@@ -3,6 +3,7 @@
 > **Surfacing predatory academic programs using federal data — because students deserve to know what a degree actually costs.**
 
 ---
+📄 **[View Full Analytical Report (PDF)](College_Debt_Outcome_Mismatch_Analyzer_Report.pdf)** — 11-page report with all findings, charts, and methodology for non-technical readers
 
 ## The Problem
 
