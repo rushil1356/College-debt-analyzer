@@ -6,6 +6,7 @@ matplotlib.use('Agg')
 from sqlalchemy import create_engine
 import anthropic
 import os
+import sys
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -124,6 +125,38 @@ col4.metric("Below Break-even", f"{len(df[df['value_score']<1.0]):,}",
             delta="earning less than borrowed", delta_color="inverse")
 
 st.divider()
+# ── PDF DOWNLOAD BUTTON ──────────────────────────────
+col_dl1, col_dl2, col_dl3 = st.columns([1, 1, 2])
+
+with col_dl1:
+    if st.button("📄 Generate PDF Report"):
+        with st.spinner("Generating report... ~10 seconds"):
+            try:
+                # Use the same Python interpreter running Streamlit
+                import subprocess
+                result = subprocess.run(
+                    [sys.executable, "generate_report.py"],
+                    capture_output=True, text=True
+                )
+                if result.returncode == 0:
+                    st.success("Report generated!")
+                else:
+                    st.error(f"Error: {result.stderr[-300:]}")
+            except Exception as e:
+                st.error(f"Failed: {str(e)}")
+
+with col_dl2:
+    pdf_path = "College_Debt_Outcome_Mismatch_Analyzer_Report.pdf"
+    if os.path.exists(pdf_path):
+        with open(pdf_path, "rb") as f:
+            st.download_button(
+                label="⬇️ Download PDF",
+                data=f,
+                file_name="College_Debt_Report.pdf",
+                mime="application/pdf"
+            )
+    else:
+        st.caption("Generate report first")
 # ── SIDEBAR ──────────────────────────────────────────
 st.sidebar.header("🔍 Filter Schools")
 
